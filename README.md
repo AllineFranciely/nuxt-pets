@@ -1,75 +1,244 @@
-# Nuxt Minimal Starter
+# 🐶🐱 Nuxt Pets
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Projeto frontend desenvolvido com **Nuxt (Vue 3)** simulando um cenário real de **BFF (Backend for Frontend)** integrado a um **backend GraphQL**, inspirado em desafios técnicos para vagas de frontend pleno.
 
-## Setup
+O objetivo é demonstrar boas práticas de arquitetura frontend, consumo de APIs, organização de projeto e experiência do usuário.
 
-Make sure to install dependencies:
+---
+
+## 🚀 Stack utilizada
+
+### Frontend
+
+* **Nuxt 3**
+* **Vue 3 (Composition API)**
+* **TypeScript**
+* **$fetch / Nitro API**
+
+### Backend (Mock)
+
+* **Apollo Server**
+* **GraphQL**
+* **Vite**
+
+### Gerenciamento
+
+* **pnpm / npm**
+* **Git (Conventional Commits)**
+
+---
+
+## 🧠 Arquitetura
+
+```
+Frontend (Nuxt Pages)
+        ↓
+BFF (server/api/*)
+        ↓
+Mock GraphQL (Apollo Server)
+```
+
+### Por que BFF?
+
+* Isola o frontend do schema GraphQL
+* Permite transformar dados para o formato ideal da UI
+* Centraliza tratamento de erros
+* Simula arquitetura real usada em produtos de escala
+
+---
+
+## 📂 Estrutura do projeto
+
+```
+nuxt-pets/
+├─ app/
+│  ├─ app.vue
+│  │
+│  ├─ components/
+│  │  ├─ ErrorMessage.vue
+│  │  ├─ PetCard.vue
+│  │  ├─ PetDetails.vue
+│  │  └─ SkeletonCard.vue
+│  │
+│  ├─ composables/
+│  │  └─ usePets.ts
+│  │
+│  └─ pages/
+│     └─ pet/
+│        ├─ index.vue
+│        └─ [id].vue
+│
+├─ server/
+│  └─ api/
+│     ├─ pets.get.ts
+│     └─ pets/
+│        └─ [id].get.ts
+│
+├─ mock-gql/
+│  ├─ server.js
+│  └─ package.json
+│
+├─ public/
+│  └─ pets/
+│     ├─ rex.jpg
+│     ├─ mia.jpg
+│     ├─ thor.jpg
+│     ├─ luna.jpg
+│     ├─ bob.jpg
+│     ├─ nina.jpg
+│     ├─ max.jpg
+│     ├─ bella.jpg
+│     ├─ rocky.jpg
+│     ├─ mel.jpg
+│     ├─ simba.jpg
+│     ├─ lilo.jpg
+│     ├─ toby.jpg
+│     ├─ lola.jpg
+│     ├─ duke.jpg
+│     ├─ kiwi.jpg
+│     ├─ apolo.jpg
+│     ├─ frida.jpg
+│     ├─ zeus.jpg
+│     └─ pipoca.jpg
+│
+├─ .env
+├─ .gitignore
+├─ nuxt.config.ts
+├─ package.json
+├─ pnpm-lock.yaml
+├─ tsconfig.json
+└─ README.md
+```
+
+---
+
+## 🔌 Backend GraphQL (Mock)
+
+O backend GraphQL é um servidor **Apollo Server standalone**, rodando localmente.
+
+### ▶️ Subir o servidor GraphQL
 
 ```bash
-# npm
-npm install
+cd mock-gql
+node server.js
+```
 
-# pnpm
+Servidor disponível em:
+
+```
+http://localhost:4000/graphql
+```
+
+### Exemplo de query
+
+```graphql
+query {
+  pets {
+    id
+    name
+    age
+    type
+    image
+  }
+}
+```
+
+---
+
+## 🔁 BFF (Backend for Frontend)
+
+Os endpoints Nuxt ficam em `server/api` e são responsáveis por:
+
+* Consumir o GraphQL
+* Tratar erros
+* Adaptar dados para a UI
+
+### Exemplos
+
+```
+GET /api/pets
+GET /api/pets/:id
+```
+
+---
+
+## 🖼️ Imagens dos pets
+
+As imagens são servidas estaticamente pelo Nuxt:
+
+```
+/public/pets/*.jpg
+```
+
+Exemplo de acesso direto:
+
+```
+http://localhost:3000/pets/rex.jpg
+```
+
+---
+
+## ▶️ Rodando o projeto
+
+### 1️⃣ Instalar dependências
+
+```bash
 pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
+# ou
+npm install
 ```
 
-## Development Server
-
-Start the development server on `http://localhost:3000`:
+### 2️⃣ Subir o Nuxt
 
 ```bash
-# npm
-npm run dev
-
-# pnpm
 pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
+# ou
+npm run dev
 ```
 
-## Production
+Acesse:
 
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
+```
+http://localhost:3000
 ```
 
-Locally preview production build:
+---
 
-```bash
-# npm
-npm run preview
+## 🧪 O que este projeto demonstra
 
-# pnpm
-pnpm preview
+* Uso real de **Nuxt + Vue 3**
+* Integração com **GraphQL**
+* Implementação de **BFF**
+* Organização de código frontend
+* Boas práticas de arquitetura
+* Simulação de desafio técnico profissional
 
-# yarn
-yarn preview
+---
 
-# bun
-bun run preview
-```
+## 📝 Boas práticas adotadas
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+* Separação clara de responsabilidades (UI / lógica / dados)
+* Uso de BFF para desacoplar frontend do GraphQL
+* Composables para reuso de lógica
+* Componentes pequenos e focados
+* Tratamento de loading e erro
+
+---
+
+## 📌 Próximos passos (possíveis melhorias)
+
+* Paginação
+* Loading skeleton
+* Tratamento visual de erros
+* Testes unitários
+* Design system
+
+---
+
+## 🐾 Motivação
+
+Projeto inspirado no ecossistema pet e na preocupação com experiência do usuário, performance e escalabilidade — valores essenciais em produtos digitais modernos.
+
+---
+
+Feito com 💙,  café ☕ e pets 🐾
