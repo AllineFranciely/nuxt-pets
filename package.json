@@ -1,0 +1,22 @@
+{
+  "name": "nuxt-pets",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "graphql-request": "^7.3.5",
+    "nuxt": "^4.2.2",
+    "ofetch": "^1.5.1",
+    "vue": "^3.5.25",
+    "vue-router": "^4.6.3"
+  },
+  "devDependencies": {
+    "@types/node": "^25.0.1"
+  }
+}
