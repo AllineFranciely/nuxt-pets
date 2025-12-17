@@ -10,6 +10,7 @@ export default defineEventHandler(async () => {
         name
         age
         type
+        image
       }
     }
   `;
@@ -29,6 +30,7 @@ export default defineEventHandler(async () => {
       id: p.id,
       name: p.name,
       tag: `${p.age} anos · ${p.type}`,
+      image: p.image,
     }));
 
     return { data: pets };

@@ -19,7 +19,7 @@ const typeDefs = `
 
 // Dados mockados
 const pets = [
-  { id: "1", name: "Rex", age: 3, type: "Dog", image: "/pets/rex.jpg" },
+  { id: "1", name: "Rex", age: 1, type: "Dog", image: "/pets/rex.jpg" },
   { id: "2", name: "Mia", age: 2, type: "Cat", image: "/pets/mia.jpg" },
   { id: "3", name: "Thor", age: 5, type: "Dog", image: "/pets/thor.jpg" },
   { id: "4", name: "Luna", age: 1, type: "Cat", image: "/pets/luna.jpg" },
