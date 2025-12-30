@@ -1,44 +1,97 @@
-import { ref } from 'vue';
+import { ref } from 'vue'
 import { $fetch } from 'ofetch'
 
+type Pet = {
+  id: string
+  name: string
+  tag: string
+  image: string
+}
+
+type PetsResponse = {
+  data: Pet[]
+  meta: {
+    page: number
+    limit: number
+    total: number
+    totalPages: number
+  }
+}
+
 const cache = {
-  pets: null as any | null,
-  petById: {} as Record<string, any>
-};
+  pages: {} as Record<number, Pet[]>,
+  petById: {} as Record<string, Pet>,
+  meta: null as PetsResponse['meta'] | null,
+}
 
 export function usePets() {
-  const pets = ref<any[]>(cache.pets ?? []);
-  const loading = ref(false);
-  const error = ref<string | null>(null);
+  const pets = ref<Pet[]>([])
+  const loading = ref(false)
+  const error = ref<string | null>(null)
 
-  async function fetchPets() {
-    if (cache.pets) {
-      pets.value = cache.pets;
-      return;
+  const page = ref(1)
+  const limit = ref(10)
+  const totalPages = ref(1)
+
+  async function fetchPets(newPage = page.value) {
+    if (cache.pages[newPage]) {
+      pets.value = cache.pages[newPage]
+      page.value = newPage
+
+      if (cache.meta) {
+        totalPages.value = cache.meta.totalPages
+      }
+
+      return
     }
-    loading.value = true;
-    error.value = null;
+
+    loading.value = true
+    error.value = null
+
     try {
-      const res = await $fetch('/api/pets');
-      pets.value = res.data;
-      cache.pets = res.data;
+      const res = await $fetch<PetsResponse>('/api/pets', {
+        params: {
+          page: newPage,
+          limit: limit.value,
+        },
+      })
+
+      pets.value = res.data
+      page.value = res.meta.page
+      totalPages.value = res.meta.totalPages
+
+      cache.pages[newPage] = res.data
+      cache.meta = res.meta
     } catch (err: any) {
-      error.value = err?.message || 'Erro';
+      error.value = err?.message || 'Erro ao buscar pets'
     } finally {
-      loading.value = false;
+      loading.value = false
     }
   }
 
   async function fetchPet(id: string) {
-    if (cache.petById[id]) return cache.petById[id];
+    if (cache.petById[id]) {
+      return cache.petById[id]
+    }
+
     try {
-      const res = await $fetch(`/api/pets/${id}`);
-      cache.petById[id] = res.data;
-      return res.data;
+      const res = await $fetch<{ data: Pet }>(`/api/pets/${id}`)
+      cache.petById[id] = res.data
+      return res.data
     } catch (err) {
-      throw err;
+      throw err
     }
   }
 
-  return { pets, fetchPets, fetchPet, loading, error };
+  return {
+    pets,
+    loading,
+    error,
+
+    page,
+    totalPages,
+
+    fetchPets,
+    fetchPet,
+  }
 }

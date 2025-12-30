@@ -25,12 +25,16 @@ export default defineEventHandler(async (event) => {
 
     const p = res.pet;
 
+    const baseUrl = 'http://localhost:3000';
+    
     return {
       data: {
         id: p.id,
         name: p.name,
         tag: `${p.age} anos · ${p.type}`,
-        image: p.image,
+        image: p.image?.startsWith('http')
+          ? p.image
+          : `${baseUrl}${p.image}`,
       }
     };
   } catch (err) {

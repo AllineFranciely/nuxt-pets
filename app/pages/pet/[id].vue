@@ -1,33 +1,28 @@
 <template>
   <main>
-    <Suspense>
-      <template #default>
-        <AsyncPetDetails :pet="pet" />
-      </template>
-      <template #fallback>
-        <SkeletonCard />
-      </template>
-    </Suspense>
+    <SkeletonCard v-if="pending" />
+
+    <PetDetails
+      v-else-if="pet"
+      :pet="pet"
+    />
+
+    <p v-else>Pet não encontrado</p>
   </main>
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { usePets } from '~/composables/usePets';
 import SkeletonCard from '~/components/SkeletonCard.vue';
+import PetDetails from '~/components/PetDetails.vue';
 
 const route = useRoute();
 const id = route.params.id as string;
-const { fetchPet } = usePets();
-const pet = ref(null);
 
-const AsyncPetDetails = defineAsyncComponent(() => import('~/components/PetDetails.vue'));
+const { data, pending } = await useAsyncData(
+  `pet-${id}`,
+  () => $fetch(`/api/pets/${id}`)
+);
 
-try {
-  pet.value = await fetchPet(id);
-} catch (err) {
-  // fallback: pet ficará null e você pode mostrar mensagem
-  pet.value = { name: 'Não encontrado', tag: '', image: '', description: '...' };
-}
+const pet = computed(() => data.value?.data ?? null);
 </script>
