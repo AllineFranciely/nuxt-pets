@@ -66,11 +66,57 @@ await fetchPets()
 </script>
 
 <style scoped>
+
+h1 {
+  text-align: center;
+  color: #4b2e83;
+  margin: 24px 0;
+  position: relative;
+}
+
+h1::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 4px;
+  background: #9e0404ff;
+  margin: 8px auto 0;
+  border-radius: 4px;
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 12px;
+  gap: 16px;
   margin-top: 12px;
+}
+
+/* desktop médio */
+@media (max-width: 1200px) {
+  .grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* tablet */
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* mobile */
+@media (max-width: 600px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* mobile pequeno */
+@media (max-width: 400px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .pagination {
@@ -84,5 +130,9 @@ await fetchPets()
 button:disabled {
   opacity: 0.4;
   cursor: not-allowed;
+}
+
+button {
+  border: 1px solid #9e0404ff;
 }
 </style>
