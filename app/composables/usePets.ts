@@ -1,5 +1,6 @@
 import { ref } from 'vue'
 import { $fetch } from 'ofetch'
+import { useRequestURL } from '#app'
 
 type Pet = {
   id: string
@@ -49,7 +50,11 @@ export function usePets() {
     error.value = null
 
     try {
-      const res = await $fetch<PetsResponse>('/api/pets', {
+      const baseURL = process.server
+        ? useRequestURL().origin
+        : ''
+
+      const res = await $fetch<PetsResponse>(`${baseURL}/api/pets`, {
         params: {
           page: newPage,
           limit: limit.value,
@@ -63,7 +68,7 @@ export function usePets() {
       cache.pages[newPage] = res.data
       cache.meta = res.meta
     } catch (err: any) {
-      error.value = err?.message || 'Erro ao buscar pets'
+      error.value = 'Erro ao buscar pets'
     } finally {
       loading.value = false
     }
@@ -75,7 +80,14 @@ export function usePets() {
     }
 
     try {
-      const res = await $fetch<{ data: Pet }>(`/api/pets/${id}`)
+      const baseURL = process.server
+        ? useRequestURL().origin
+        : ''
+
+      const res = await $fetch<{ data: Pet }>(
+        `${baseURL}/api/pets/${id}`
+      )
+
       cache.petById[id] = res.data
       return res.data
     } catch (err) {
