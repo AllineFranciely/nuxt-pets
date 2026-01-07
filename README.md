@@ -242,3 +242,5 @@ Projeto inspirado no ecossistema pet e na preocupação com experiência do usu�
 ---
 
 Feito com 💙,  café ☕ e pets 🐾
+
+![2026-01-06 18-11-48](https://github.com/user-attachments/assets/d764591c-dc3d-4949-a230-816b65b54397)
